@@ -14,28 +14,58 @@ import ShoppingHome from "./pages/shopping-view/home";
 import ShoppingListing from "./pages/shopping-view/listing";
 import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
+import CheckAuth from "./components/common-components/check-auth";
+import UnauthPage from "./pages/unauth-page";
 
 function App() {
+  const isAuthenticated = true;
+  const user = {
+    role: 'user',
+    user: 'Sujan'
+  }
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        <Route path="/auth" element={<AuthLayout />}>
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="register" element={<AuthRegister />} />
           <Route path="login" element={<AuthLogin />} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProduct />} />
           <Route path="features" element={<AdminFeatures />} />
           <Route path="orders" element={<AdminOrders />} />
         </Route>
-        <Route path="/shop" element={<ShoppingLayout/>}>
-            <Route path="home" element={<ShoppingHome/>}/>
-            <Route path="listing" element={<ShoppingListing/>}/>
-            <Route path="checkout" element={<ShoppingCheckout/>}/>
-            <Route path="account" element={<ShoppingAccount/>}/>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="home" element={<ShoppingHome />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="account" element={<ShoppingAccount />} />
         </Route>
-        <Route path="*" element={<NotFoundPage/>} />
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/unauth-page" element={<UnauthPage/>}/>
       </Routes>
     </div>
   );
